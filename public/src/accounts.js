@@ -9,24 +9,13 @@ const sortAccountsByLastName = (accounts) =>
   );
 
 function getTotalNumberOfBorrows(account, books) {
-
-  //create a variable to hold the value of the amount of times book was borrowed by account holder
-  let total = 0;
-  //set a variable to access to the id value in account
   const accountId = account.id;
 
-  //create outerloop for the books array
-  for (let i = 0; i < books.length; i++) {
-    //create variable to gain access to the borrows array with the book object
-    const bookLog = books[i].borrows;
-    //inner loop through the borrows array to begin counting
-    for (let j = 0; j < bookLog.length; j++) {
-      if (bookLog[j].id === accountId) {
-        //increment total of times accountId passed in matches the current iterated book log
-        total++;
-      }
-    }
-  }
+  const total = books.reduce((count, book) => {
+    const borrowed = book.borrows.filter((borrow) => borrow.id === accountId);
+    return count + borrowed.length;
+  }, 0);
+
   return total;
 }
 
